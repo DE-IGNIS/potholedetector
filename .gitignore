@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+evidence/
+outbox/
+
+# private test photos, never publish
+indian_test/
+
+# database side files and misc
+tickets.db*
+*.pt
+best_v*.onnx
+.DS_Store
+*.deb
