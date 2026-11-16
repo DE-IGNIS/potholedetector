@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pothole Detector</title>
+<meta name="description" content="Upload a road photo, detect potholes, and file a ticket with the municipality for that location.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><span class="mark" aria-hidden="true"></span>Pothole Detector</div>
+  <div class="pill" id="server-pill" data-state="checking" role="status">
+    <span class="dot" aria-hidden="true"></span><span id="server-text">Checking server…</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="eyebrow">Road repair, reported</p>
+    <h1>Spot the pothole.<br>File the ticket.</h1>
+    <p class="lede">Upload a road photo. The model finds the potholes, then a ticket is raised with the municipality for that location.</p>
+  </section>
+
+  <ol class="steps" aria-label="Progress">
+    <li data-step="1" data-state="active"><span>1</span>Upload</li>
+    <li data-step="2"><span>2</span>Detect</li>
+    <li data-step="3"><span>3</span>Ticket</li>
+  </ol>
+
+  <!-- Step 1: upload -->
+  <section class="card" id="upload-card">
+    <label class="drop" id="drop" for="file">
+      <input type="file" id="file" accept="image/*">
+      <div id="drop-empty" class="drop-empty">
+        <svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M24 32V10M15 19l9-9 9 9"/><path d="M8 32v6a2 2 0 0 0 2 2h28a2 2 0 0 0 2-2v-6"/>
+        </svg>
+        <p class="drop-title">Drop a road photo here</p>
+        <p class="drop-sub">or click to choose one · JPG or PNG, up to 10 MB</p>
+      </div>
+      <div id="drop-preview" class="drop-preview" hidden>
+        <img id="preview" alt="Selected road photo">
+        <span id="fname" class="fname"></span>
+      </div>
+    </label>
+
+    <div class="actions" id="actions" hidden>
+      <button class="btn primary" id="detect" type="button">Detect potholes</button>
+      <button class="btn ghost" id="clear" type="button">Choose another photo</button>
+    </div>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Step 2: result + location -->
+  <section class="card reveal" id="result" hidden>
+    <div class="result-grid">
+      <figure class="shot">
+        <img id="result-img" alt="Road photo with detected potholes outlined">
+      </figure>
+
+      <div class="panel">
+        <p class="eyebrow">Result</p>
+        <p class="count"><span id="count">0</span> <span id="count-label">potholes detected</span></p>
+        <p class="muted" id="none-msg" hidden>No potholes were found in this photo, so there is nothing to report. Try a clearer photo of the road surface.</p>
+
+        <div id="locate" hidden>
+          <p class="loc-title">Where is this?</p>
+          <p class="loc-text" id="loc-text"></p>
+
+          <div class="loc-actions" id="loc-actions">
+            <button class="btn secondary" id="use-loc" type="button">Use my current location</button>
+            <form class="manual" id="manual" autocomplete="off">
+              <label for="manual-input" class="sr">Coordinates</label>
+              <input id="manual-input" type="text" inputmode="decimal" placeholder="or paste coordinates: 22.7196, 75.8577">
+              <button class="btn ghost" type="submit">Set</button>
+            </form>
+          </div>
+
+          <button class="btn primary wide" id="file-ticket" type="button" disabled>File ticket with municipality</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3: ticket -->
+  <section class="reveal" id="ticket" hidden>
+    <div class="stub">
+      <div class="stub-main">
+        <p class="eyebrow" id="t-kicker">Ticket filed</p>
+        <h2 id="t-id">PH-</h2>
+        <p class="t-msg" id="t-msg"></p>
+        <dl>
+          <div><dt>Routed to</dt><dd id="t-muni"></dd></div>
+          <div><dt>Location</dt><dd id="t-loc"></dd></div>
+          <div><dt>Potholes</dt><dd id="t-count"></dd></div>
+          <div><dt>Filed</dt><dd id="t-time"></dd></div>
+        </dl>
+      </div>
+      <div class="stub-side">
+        <svg viewBox="0 0 48 48" width="52" height="52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="24" cy="24" r="19"/><path d="M15 25l7 7 12-14"/>
+        </svg>
+        <span>Success</span>
+      </div>
+    </div>
+    <div class="after">
+      <button class="btn secondary" id="again" type="button">Report another</button>
+    </div>
+  </section>
+
+  <p class="note">A learning project: detection runs on the builder’s own computer, and tickets are simulated and saved there. Nothing is sent to a real municipality.</p>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
